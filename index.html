@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Internal, gated microsite — keep it out of search engines. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>A Land for All · Retreat Summary</title>
+
+<!-- Only permitted external resource: Google Fonts (Spectral + Inter) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   DESIGN TOKENS
+   Earthy, editorial, diplomatic palette (matches the reference design).
+   ========================================================================= */
+:root{
+  --ink:#27424d;        /* deep slate — headings, sidebar */
+  --ink-soft:#3d5a66;
+  --slate:#50808E;      /* slate-turquoise — tags, secondary */
+  --sage:#84B59F;       /* sage green — primary accent (land/olive) */
+  --sage-deep:#5d9180;  /* deeper sage — links, eyebrows */
+  --mist:#f1f6f4;       /* pale sage background */
+  --mist-2:#e4eeea;
+  --paper:#fbfdfc;      /* page background */
+  --line:#d9e6e1;       /* hairline borders */
+  --body:#44565c;       /* body text */
+  --muted:#7b8f94;      /* secondary text */
+  --clay:#c2703e;       /* warm clay — sparing highlight only */
+  --clay-soft:#f8ece3;
+  --gold:#b98a2f;
+  --radius:14px;
+  --font-display:"Spectral", Georgia, "Times New Roman", serif;
+  --font-body:"Inter", "Segoe UI", system-ui, Arial, sans-serif;
+  --shadow-sm:0 1px 3px rgba(39,66,77,.05);
+  --shadow-lg:0 8px 22px rgba(39,66,77,.10);
+}
+
+/* =========================================================================
+   RESET & BASE
+   ========================================================================= */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--paper);
+  color:var(--body);
+  font-size:16px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--sage);color:#fff}
+a{color:var(--sage-deep)}
+img,svg{max-width:100%}
+
+/* Respect reduced-motion: kill transitions, animations and smooth scroll. */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *{transition:none !important;animation:none !important}
+}
+
+/* Visible focus everywhere for keyboard users. */
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{
+  outline:2px solid var(--sage-deep);outline-offset:2px;border-radius:4px;
+}
+
+/* Skip link for keyboard / screen-reader users. */
+.skip{
+  position:absolute;left:-999px;top:.5rem;z-index:2000;
+  background:var(--ink);color:#fff;padding:.5rem .9rem;border-radius:8px;font-weight:600;
+}
+.skip:focus{left:.5rem}
+
+/* =========================================================================
+   PASSWORD GATE  (client-side deterrence only — see script note)
+   ========================================================================= */
+#gate{
+  position:fixed;inset:0;z-index:1000;
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgba(80,128,142,.40) 0%, transparent 55%),
+    radial-gradient(90% 60% at 0% 100%, rgba(132,181,159,.30) 0%, transparent 55%),
+    var(--ink);
+  display:flex;align-items:center;justify-content:center;padding:1.5rem;
+}
+#gate.hidden{display:none}
+.gate-card{
+  background:var(--paper);border-radius:18px;max-width:410px;width:100%;
+  padding:2.6rem 2.2rem;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.42);
+}
+.gate-art{width:104px;height:104px;margin:0 auto .6rem;display:block}
+.gate-card .eyebrow{
+  font-size:.72rem;letter-spacing:.16em;color:var(--sage-deep);
+  text-transform:uppercase;font-weight:700;
+}
+.gate-card h1{
+  font-family:var(--font-display);font-weight:700;font-size:1.6rem;
+  color:var(--ink);margin:.3rem 0 .25rem;line-height:1.2;
+}
+.gate-card p{font-size:.9rem;color:var(--muted);margin-bottom:1.3rem}
+.gate-card input{
+  width:100%;font-family:var(--font-body);font-size:1rem;text-align:center;
+  padding:.72rem .9rem;border:1.5px solid var(--line);border-radius:10px;
+  background:#fff;color:var(--ink);margin-bottom:.7rem;
+}
+.gate-card input:focus{outline:none;border-color:var(--sage)}
+.gate-card button{
+  width:100%;font-family:var(--font-body);font-size:.95rem;font-weight:700;
+  background:var(--sage-deep);color:#fff;border:none;border-radius:10px;
+  padding:.74rem;cursor:pointer;transition:background .2s;
+}
+.gate-card button:hover{background:var(--ink)}
+.gate-err{color:var(--clay);font-size:.84rem;font-weight:600;min-height:1.2em;margin-top:.6rem}
+
+/* =========================================================================
+   SHELL  — sticky sidebar + main
+   ========================================================================= */
+.shell{display:grid;grid-template-columns:300px 1fr;min-height:100vh}
+
+/* ---- Mobile top bar (hidden on desktop) ---- */
+.topbar{
+  display:none;position:sticky;top:0;z-index:60;
+  align-items:center;justify-content:space-between;gap:.8rem;
+  background:var(--ink);color:#fff;padding:.7rem 1rem;
+}
+.topbar .tb-brand{display:flex;flex-direction:column;line-height:1.15}
+.topbar .tb-brand .eyebrow{font-size:.6rem;letter-spacing:.16em;color:var(--sage);text-transform:uppercase;font-weight:700}
+.topbar .tb-brand strong{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
+.hamburger{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  color:#fff;width:42px;height:38px;border-radius:9px;cursor:pointer;
+  display:grid;place-items:center;gap:0;
+}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;margin:2px 0;border-radius:2px}
+.backdrop{display:none;position:fixed;inset:0;background:rgba(20,34,40,.5);z-index:40}
+.backdrop.show{display:block}
+
+/* =========================================================================
+   SIDEBAR
+   ========================================================================= */
+.sidebar{
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgba(80,128,142,.35) 0%, transparent 55%),
+    radial-gradient(90% 50% at 0% 100%, rgba(105,162,151,.28) 0%, transparent 50%),
+    var(--ink);
+  color:#dbe8e3;
+  padding:2rem 1.5rem 2.5rem;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:var(--slate) transparent;
+}
+.brand{margin-bottom:1.4rem}
+.brand .eyebrow{
+  font-size:.7rem;letter-spacing:.14em;color:var(--sage);
+  text-transform:uppercase;font-weight:600;display:block;
+}
+.brand h1{
+  font-family:var(--font-display);font-weight:700;font-size:1.6rem;color:#fff;
+  line-height:1.22;margin-top:.25rem;
+}
+.brand .sub{font-size:.82rem;color:#9fb8b0;margin-top:.4rem}
+.brand .badge{
+  display:inline-flex;align-items:center;gap:.4rem;margin-top:.8rem;
+  padding:.22rem .65rem;border-radius:999px;
+  background:rgba(132,181,159,.16);border:1px solid rgba(132,181,159,.4);
+  font-size:.7rem;color:#bcd8cd;font-weight:600;
+}
+.brand .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sage)}
+
+/* ---- Tab navigation (vertical buttons) ---- */
+.tabs{display:flex;flex-direction:column;gap:.25rem;margin:1.3rem 0 1.5rem}
+.tab-btn{
+  font-family:var(--font-body);font-size:.86rem;font-weight:600;text-align:left;
+  border:none;border-radius:9px;padding:.6rem .8rem;cursor:pointer;
+  background:transparent;color:#a9c3bb;transition:background .2s,color .2s;
+  display:flex;align-items:center;gap:.6rem;
+}
+.tab-btn .ix{
+  font-size:.68rem;font-weight:700;width:1.4rem;height:1.4rem;flex-shrink:0;
+  display:grid;place-items:center;border-radius:6px;
+  background:rgba(255,255,255,.07);color:#bcd8cd;transition:background .2s,color .2s;
+}
+.tab-btn:hover{color:#fff;background:rgba(255,255,255,.05)}
+.tab-btn.active{background:var(--sage);color:var(--ink)}
+.tab-btn.active .ix{background:var(--ink);color:#fff}
+
+/* ---- In-page section nav (one pane per tab) ---- */
+.nav-title{font-size:.7rem;letter-spacing:.13em;color:#8fa9a1;font-weight:700;text-transform:uppercase;margin-bottom:.7rem}
+.nav-pane{display:none}
+.nav-pane.visible{display:block}
+.spine{position:relative;padding-left:1.05rem}
+.spine::before{
+  content:"";position:absolute;left:.3rem;top:.5rem;bottom:.5rem;width:2px;
+  background:linear-gradient(var(--slate),var(--sage));border-radius:2px;opacity:.5;
+}
+.spine a{
+  position:relative;display:block;font-size:.84rem;color:#aec6be;text-decoration:none;
+  padding:.26rem 0 .26rem .55rem;margin-left:-.6rem;border-left:2px solid transparent;
+  transition:color .15s,border-color .15s;
+}
+.spine a::before{
+  content:"";position:absolute;left:-.12rem;top:.72em;width:9px;height:9px;border-radius:50%;
+  background:var(--ink);border:2px solid var(--sage);
+}
+.spine a:hover{color:#fff}
+.spine a.active{color:#fff;border-left-color:var(--sage)}
+.spine a.active::before{background:var(--sage)}
+
+/* =========================================================================
+   MAIN + PANES
+   ========================================================================= */
+.main{padding:2.6rem clamp(1.4rem,4vw,5rem) 4rem;width:100%;display:flex;flex-direction:column;align-items:center}
+.pane{display:none;width:100%;max-width:1060px}
+.pane.visible{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.pane.visible{animation:none}}
+
+/* ---- Page header ---- */
+.page-head{margin-bottom:2rem}
+.page-head .crumb{font-size:.74rem;letter-spacing:.13em;color:var(--sage-deep);font-weight:700;text-transform:uppercase}
+.page-head h2{
+  font-family:var(--font-display);font-weight:700;font-size:clamp(1.9rem,4vw,2.5rem);
+  color:var(--ink);line-height:1.18;margin:.3rem 0 .55rem;
+}
+.page-head .lede{max-width:68ch;color:var(--ink-soft);font-size:1.05rem}
+
+/* ---- Section heads inside a pane ---- */
+.section{margin-bottom:2.4rem;scroll-margin-top:1.5rem}
+.section-head{display:flex;align-items:baseline;gap:.7rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--mist-2)}
+.section-head h3{font-family:var(--font-display);font-weight:700;font-size:1.4rem;color:var(--ink)}
+.section-head .tag{
+  flex-shrink:0;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;background:var(--slate);border-radius:7px;padding:.2rem .55rem;
+}
+.lead-p{font-size:1.02rem;margin-bottom:1rem}
+.lead-p strong{color:var(--ink)}
+p+p{margin-top:.85rem}
+
+/* =========================================================================
+   COMPONENTS
+   ========================================================================= */
+/* ---- Chips / stat row ---- */
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.chip{
+  font-size:.78rem;font-weight:600;color:var(--ink-soft);
+  background:var(--mist);border:1px solid var(--line);border-radius:999px;padding:.3rem .85rem;
+}
+.chip strong{color:var(--ink)}
+
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin:1.4rem 0 .4rem}
+.stat{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  padding:1rem 1.1rem;box-shadow:var(--shadow-sm);
+}
+.stat .k{font-family:var(--font-display);font-weight:700;color:var(--ink);font-size:1.18rem;line-height:1.2}
+.stat .l{font-size:.78rem;color:var(--muted);margin-top:.3rem;line-height:1.4}
+
+/* ---- Cards & grids ---- */
+.grid{display:grid;gap:1rem}
+.grid.c2{grid-template-columns:1fr 1fr}
+.grid.c3{grid-template-columns:repeat(3,1fr)}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  padding:1.2rem 1.3rem;box-shadow:var(--shadow-sm);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+@media (prefers-reduced-motion: reduce){.card:hover{transform:none}}
+.card h4{font-family:var(--font-display);font-size:1.08rem;color:var(--ink);margin-bottom:.4rem}
+.card p{font-size:.92rem}
+
+/* ---- Pillars (3-col triads) ---- */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:.4rem}
+.pillar{background:var(--mist);border:1px solid var(--mist-2);border-radius:12px;padding:1.1rem 1.2rem}
+.pillar .ico{
+  width:2.4rem;height:2.4rem;border-radius:11px;background:#fff;border:1px solid var(--line);
+  display:grid;place-items:center;margin-bottom:.65rem;color:var(--sage-deep);
+}
+.pillar .t{font-family:var(--font-display);font-weight:700;color:var(--ink);font-size:1.08rem;margin-bottom:.3rem}
+.pillar p{font-size:.9rem;line-height:1.6}
+
+/* ---- Accordions ---- */
+details.acc{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:.8rem;overflow:hidden;box-shadow:var(--shadow-sm);
+}
+details.acc[open]{box-shadow:var(--shadow-lg)}
+details.acc>summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;gap:.8rem;
+  padding:.95rem 1.2rem;font-weight:600;color:var(--ink);font-size:1.04rem;transition:background .15s;
+}
+details.acc>summary::-webkit-details-marker{display:none}
+details.acc>summary:hover{background:var(--mist)}
+.acc .twist{
+  flex-shrink:0;width:1.5rem;height:1.5rem;border-radius:7px;
+  background:var(--mist-2);color:var(--ink-soft);display:grid;place-items:center;
+  font-size:.9rem;font-weight:800;transition:transform .25s,background .2s,color .2s;
+}
+details.acc[open] .twist{transform:rotate(90deg);background:var(--sage);color:#fff}
+.acc-num{
+  flex-shrink:0;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--mist);
+  color:var(--sage-deep);display:grid;place-items:center;font-size:.82rem;font-weight:700;
+}
+.acc-body{padding:.2rem 1.25rem 1.3rem;border-top:1px dashed var(--line)}
+.acc-body>*+*{margin-top:.7rem}
+.acc-body p{font-size:.95rem}
+
+/* ---- Clean bullet lists ---- */
+ul.clean{list-style:none}
+ul.clean li{position:relative;padding-left:1.3rem;margin-bottom:.5rem;font-size:.95rem}
+ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--sage)}
+ul.clean li b{color:var(--ink)}
+
+/* ---- Quote box ---- */
+.quote{
+  background:var(--mist);border-radius:12px;padding:1.1rem 1.3rem 1.1rem 1.5rem;
+  font-family:var(--font-display);font-size:1.08rem;font-weight:500;color:var(--ink);position:relative;
+}
+.quote::before{content:"\201C";position:absolute;top:-.2rem;left:.7rem;font-size:3rem;color:var(--sage);opacity:.55;font-family:var(--font-display)}
+.quote .who{display:block;font-family:var(--font-body);font-size:.74rem;font-weight:600;color:var(--sage-deep);margin-top:.5rem;letter-spacing:.04em;text-transform:uppercase}
+
+/* ---- Note / callout boxes ---- */
+.note{background:var(--mist);border:1px solid var(--line);border-radius:12px;padding:1rem 1.2rem;font-size:.94rem}
+.note b{color:var(--ink)}
+.callout{background:var(--clay-soft);border:1px solid #ecd6c5;border-radius:12px;padding:1.1rem 1.3rem;font-size:.95rem;color:#6a4a33}
+.callout h4{font-family:var(--font-display);color:var(--clay);font-size:1.1rem;margin-bottom:.55rem}
+.callout ul.clean li::before{background:var(--clay)}
+.callout ul.clean li b{color:#6a4a33}
+
+/* ---- Gradient framing panel ---- */
+.gpanel{
+  background:linear-gradient(135deg,var(--ink),var(--slate));color:#eaf3ef;
+  border-radius:var(--radius);padding:1.5rem 1.7rem;margin:.3rem 0 1.4rem;
+}
+.gpanel .lead{font-family:var(--font-display);font-size:1.3rem;font-weight:600;color:#fff;line-height:1.45}
+.gpanel p{font-size:.95rem;color:#cfe0da;margin-top:.5rem}
+
+/* =========================================================================
+   CUSTOM GRAPHIC — Confederation model
+   ========================================================================= */
+.confed{margin:.6rem 0 .4rem;display:flex;flex-direction:column;gap:0;align-items:center}
+.confed-band{
+  width:100%;background:linear-gradient(135deg,var(--ink),var(--slate));color:#eaf3ef;
+  border-radius:14px 14px 4px 4px;padding:1rem 1.2rem;text-align:center;
+}
+.confed-band .cap{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);font-weight:700}
+.confed-band .insts{display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center;margin-top:.6rem}
+.confed-band .insts span{
+  font-size:.78rem;font-weight:500;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:.22rem .7rem;
+}
+.confed-stem{width:2px;height:26px;background:linear-gradient(var(--slate),var(--sage));opacity:.6}
+.confed-states{
+  width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:0;
+}
+.confed-state{
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;
+  box-shadow:var(--shadow-sm);text-align:center;
+}
+.confed-state .flag{width:34px;height:22px;border-radius:4px;margin:0 auto .5rem;border:1px solid var(--line)}
+.confed-state.israel .flag{background:linear-gradient(#fff 0 100%);position:relative}
+.confed-state.israel .flag::before{content:"";position:absolute;inset:0;border-top:4px solid var(--slate);border-bottom:4px solid var(--slate)}
+.confed-state.palestine .flag{background:linear-gradient(180deg,#1f3a45 0 33%,#fff 33% 66%,var(--sage-deep) 66% 100%)}
+.confed-state .nm{font-family:var(--font-display);font-weight:700;color:var(--ink);font-size:1.15rem}
+.confed-state .role{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-top:.1rem}
+.confed-state p{font-size:.84rem;margin-top:.5rem;color:var(--body)}
+.confed-link{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 .6rem;min-width:120px}
+.confed-link .ring{
+  width:60px;height:60px;border-radius:50%;background:var(--mist);border:2px dashed var(--sage);
+  display:grid;place-items:center;color:var(--sage-deep);font-size:1.4rem;
+}
+.confed-link .lbl{font-size:.72rem;font-weight:700;color:var(--sage-deep);text-align:center;margin-top:.4rem;line-height:1.3}
+.confed-capital{
+  margin-top:14px;background:var(--clay-soft);border:1px solid #ecd6c5;border-radius:999px;
+  padding:.5rem 1.2rem;font-size:.86rem;color:#6a4a33;text-align:center;
+}
+.confed-capital b{color:var(--clay)}
+
+/* =========================================================================
+   CUSTOM GRAPHIC — Vertical agenda spine
+   ========================================================================= */
+.agenda{position:relative;padding-left:2rem;margin-top:.4rem}
+.agenda::before{content:"";position:absolute;left:.5rem;top:.6rem;bottom:.6rem;width:2px;background:linear-gradient(var(--slate),var(--sage));opacity:.5}
+.ag-item{position:relative;margin-bottom:1.2rem}
+.ag-item::before{
+  content:"";position:absolute;left:-1.6rem;top:.3rem;width:13px;height:13px;border-radius:50%;
+  background:var(--paper);border:2.5px solid var(--sage);
+}
+.ag-item .h{font-family:var(--font-display);font-weight:700;color:var(--ink);font-size:1.06rem}
+.ag-item .who{font-size:.8rem;color:var(--sage-deep);font-weight:600;margin-top:.05rem}
+.ag-item p{font-size:.9rem;margin-top:.2rem}
+
+/* =========================================================================
+   CUSTOM GRAPHIC — Horizontal calendar timeline
+   ========================================================================= */
+.timeline{position:relative;display:flex;gap:.6rem;overflow-x:auto;padding:1.6rem .2rem .6rem;margin-top:.4rem;scrollbar-width:thin}
+.timeline::before{content:"";position:absolute;left:.6rem;right:.6rem;top:2.05rem;height:2px;background:linear-gradient(90deg,var(--slate),var(--sage));opacity:.5}
+.tl-node{position:relative;flex:1;min-width:120px;text-align:center;padding-top:1rem}
+.tl-node .dot{
+  position:absolute;top:.2rem;left:50%;transform:translateX(-50%);
+  width:14px;height:14px;border-radius:50%;background:var(--paper);border:2.5px solid var(--sage);
+}
+.tl-node .when{font-size:.7rem;color:var(--muted);font-weight:600;display:block;margin-top:.3rem}
+.tl-node .what{font-size:.86rem;color:var(--ink);font-weight:600;line-height:1.3;display:block;margin-top:.15rem}
+.tl-node.anchor .dot{width:20px;height:20px;top:-.1rem;background:var(--clay);border-color:var(--clay);box-shadow:0 0 0 4px var(--clay-soft)}
+.tl-node.anchor .what{color:var(--clay)}
+.tl-node.anchor .when{color:var(--clay)}
+.tl-node.muted .what{color:var(--muted);font-weight:500}
+
+/* =========================================================================
+   CUSTOM GRAPHIC — Pyramid (three arenas)
+   ========================================================================= */
+.pyramid{display:flex;flex-direction:column;align-items:center;gap:.4rem;margin-top:.5rem}
+.pyr-tier{
+  border-radius:10px;padding:.85rem 1.1rem;text-align:center;color:#fff;
+}
+.pyr-tier .t{font-family:var(--font-display);font-weight:700;font-size:1.02rem}
+.pyr-tier .d{font-size:.82rem;opacity:.92;margin-top:.1rem}
+.pyr-tier.t1{width:54%;background:var(--ink)}
+.pyr-tier.t2{width:77%;background:var(--slate)}
+.pyr-tier.t3{width:100%;background:var(--sage-deep)}
+
+/* =========================================================================
+   CUSTOM GRAPHIC — Nested levels of impact
+   ========================================================================= */
+.nested{margin-top:.5rem}
+.nl{border-radius:14px;padding:1rem 1.2rem .9rem;text-align:center}
+.nl .t{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
+.nl .d{font-size:.82rem;margin-top:.05rem}
+.nl1{background:var(--mist);border:1px solid var(--mist-2);color:var(--ink)}
+.nl2{background:var(--mist-2);border:1px solid var(--line);color:var(--ink);margin:.55rem auto 0;width:84%}
+.nl3{background:var(--sage);color:var(--ink);margin:.55rem auto 0;width:64%}
+.nl .d{color:var(--ink-soft)}
+.nl3 .d{color:#2c4a3f}
+
+/* =========================================================================
+   CUSTOM GRAPHIC — Four questions card
+   ========================================================================= */
+.fourq{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.5rem}
+.fourq .q{
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;
+  box-shadow:var(--shadow-sm);display:flex;gap:.7rem;align-items:flex-start;
+}
+.fourq .q .n{
+  flex-shrink:0;width:1.8rem;height:1.8rem;border-radius:8px;background:var(--mist);
+  color:var(--sage-deep);display:grid;place-items:center;font-weight:700;font-size:.9rem;
+}
+.fourq .q .qt{font-weight:600;color:var(--ink);font-size:.96rem;line-height:1.4}
+
+/* =========================================================================
+   CUSTOM GRAPHIC — Numbered theme cards / road-ahead cards
+   ========================================================================= */
+.numcards{display:grid;gap:1rem}
+.numcard{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  padding:1.15rem 1.3rem;box-shadow:var(--shadow-sm);display:flex;gap:1rem;align-items:flex-start;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.numcard:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+@media (prefers-reduced-motion: reduce){.numcard:hover{transform:none}}
+.numcard .num{
+  flex-shrink:0;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--ink);color:#fff;
+  display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:1rem;
+}
+.numcard .body h4{font-family:var(--font-display);font-size:1.1rem;color:var(--ink);margin-bottom:.25rem}
+.numcard .body p{font-size:.92rem}
+.roadgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* =========================================================================
+   CUSTOM GRAPHIC — Transcripts widget + strip
+   ========================================================================= */
+.tw{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+.tw-head{padding:1.1rem 1.3rem .9rem;border-bottom:1px solid var(--line);background:var(--mist)}
+.tw-head h4{font-family:var(--font-display);font-size:1.15rem;color:var(--ink)}
+.tw-head p{font-size:.86rem;color:var(--muted);margin-top:.25rem}
+.tw-row{display:flex;align-items:center;gap:1rem;padding:1rem 1.3rem;border-bottom:1px solid var(--line)}
+.tw-row:last-child{border-bottom:none}
+.tw-row .doc{
+  flex-shrink:0;width:2.6rem;height:2.6rem;border-radius:10px;background:var(--mist);
+  display:grid;place-items:center;color:var(--sage-deep);
+}
+.tw-row .meta{flex:1;min-width:0}
+.tw-row .meta .t{font-weight:600;color:var(--ink);font-size:.98rem}
+.tw-row .meta .d{font-size:.8rem;color:var(--muted)}
+.tw-row .acts{display:flex;gap:.5rem;flex-shrink:0}
+.btn{
+  font-family:var(--font-body);font-size:.82rem;font-weight:600;text-decoration:none;
+  border-radius:8px;padding:.5rem .9rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;
+  transition:background .18s,border-color .18s,color .18s;white-space:nowrap;
+}
+.btn.view{background:var(--sage-deep);color:#fff;border:1px solid var(--sage-deep)}
+.btn.view:hover{background:var(--ink);border-color:var(--ink)}
+.btn.dl{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.dl:hover{border-color:var(--sage);color:var(--sage-deep)}
+
+.tw-strip{
+  display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;
+  background:var(--mist);border:1px solid var(--line);border-radius:12px;
+  padding:.8rem 1.1rem;margin-top:1.4rem;font-size:.9rem;
+}
+.tw-strip .lbl{flex:1;min-width:200px;color:var(--ink-soft)}
+.tw-strip .lbl b{color:var(--ink)}
+
+/* =========================================================================
+   FOOTER
+   ========================================================================= */
+footer{
+  width:100%;max-width:1060px;margin-top:3rem;padding-top:1.3rem;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;
+  font-size:.78rem;color:var(--muted);
+}
+footer .r{max-width:52ch;text-align:right}
+footer a{color:var(--sage-deep)}
+
+/* =========================================================================
+   RESPONSIVE
+   ========================================================================= */
+/* Tablet: narrow the grids */
+@media (min-width:861px) and (max-width:1180px){
+  .shell{grid-template-columns:250px 1fr}
+  .statrow{grid-template-columns:1fr 1fr}
+  .pillars{grid-template-columns:1fr}
+}
+@media (min-width:861px) and (max-width:1320px){
+  .pillars{grid-template-columns:repeat(3,1fr)}
+}
+
+/* Mobile / narrow: single column, off-canvas sidebar */
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .topbar{display:flex}
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;width:84%;max-width:320px;height:100vh;z-index:50;
+    transform:translateX(-100%);transition:transform .28s ease;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .main{padding:1.6rem 1.1rem 3.5rem}
+  .statrow{grid-template-columns:1fr 1fr}
+  .grid.c2,.grid.c3,.pillars,.roadgrid,.fourq{grid-template-columns:1fr}
+  .confed-states{grid-template-columns:1fr}
+  .confed-link{flex-direction:row;gap:.6rem;padding:.6rem 0;min-width:0}
+  .confed-link .ring{transform:rotate(90deg)}
+  .confed-link .lbl{margin-top:0}
+  .pyr-tier.t1,.pyr-tier.t2,.pyr-tier.t3{width:100%}
+  .nl2,.nl3{width:100%}
+  .tw-row{flex-wrap:wrap}
+  .tw-row .acts{width:100%}
+  .tw-row .acts .btn{flex:1;justify-content:center}
+  footer{flex-direction:column}
+  footer .r{text-align:left}
+}
+@media (prefers-reduced-motion: reduce){.sidebar{transition:none}}
+
+/* Large screens: use the width */
+@media (min-width:1500px){
+  .shell{grid-template-columns:330px 1fr}
+  .pane,footer{max-width:1180px}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- =========================================================================
+     PASSWORD GATE
+     ========================================================================= -->
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="gate-card">
+    <svg class="gate-art" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Internal document — restricted access">
+      <defs>
+        <radialGradient id="gA" cx="50%" cy="42%" r="60%">
+          <stop offset="0" stop-color="#84B59F"/><stop offset="1" stop-color="#50808E"/>
+        </radialGradient>
+      </defs>
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#84B59F" stroke-width="1.2" opacity=".30"/>
+      <circle cx="60" cy="60" r="40" fill="none" stroke="#84B59F" stroke-width="1.4" opacity=".50"/>
+      <circle cx="60" cy="60" r="30" fill="url(#gA)" opacity=".16"/>
+      <g transform="translate(60 58)">
+        <rect x="-15" y="-2" width="30" height="24" rx="6" fill="url(#gA)"/>
+        <path d="M-9,-2 v-6 a9,9 0 0 1 18,0 v6" fill="none" stroke="#50808E" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="0" cy="8" r="3.4" fill="#fbfdfc"/>
+        <rect x="-1.6" y="9" width="3.2" height="7" rx="1.6" fill="#fbfdfc"/>
+      </g>
+    </svg>
+    <span class="eyebrow">A Land for All · Internal</span>
+    <h1 id="gate-title">Retreat Summary</h1>
+    <p>Enter the password to continue.</p>
+    <input type="password" id="gate-input" placeholder="Password" autocomplete="off" aria-label="Password">
+    <button id="gate-btn">Enter</button>
+    <div class="gate-err" id="gate-err" role="alert"></div>
+  </div>
+</div>
+
+<!-- Mobile top bar -->
+<header class="topbar">
+  <div class="tb-brand">
+    <span class="eyebrow">A Land for All</span>
+    <strong>Retreat Summary</strong>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="backdrop" id="backdrop"></div>
+
+<div class="shell">
+
+  <!-- =======================================================================
+       SIDEBAR
+       ======================================================================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="eyebrow">A Land for All</span>
+      <h1>Retreat Summary</h1>
+      <div class="sub">The movement &amp; its international strategy</div>
+      <span class="badge">Internal · Board &amp; Assembly</span>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab-btn active" id="tab-overview" role="tab" aria-selected="true" aria-controls="pane-overview" data-tab="overview"><span class="ix">01</span>Overview</button>
+      <button class="tab-btn" id="tab-retreat" role="tab" aria-selected="false" aria-controls="pane-retreat" data-tab="retreat"><span class="ix">02</span>The Retreat</button>
+      <button class="tab-btn" id="tab-s2" role="tab" aria-selected="false" aria-controls="pane-s2" data-tab="s2"><span class="ix">03</span>Session 2 · Taking Stock</button>
+      <button class="tab-btn" id="tab-s3" role="tab" aria-selected="false" aria-controls="pane-s3" data-tab="s3"><span class="ix">04</span>Session 3 · The Year Ahead</button>
+      <button class="tab-btn" id="tab-themes" role="tab" aria-selected="false" aria-controls="pane-themes" data-tab="themes"><span class="ix">05</span>Themes &amp; Conclusions</button>
+      <button class="tab-btn" id="tab-road" role="tab" aria-selected="false" aria-controls="pane-road" data-tab="road"><span class="ix">06</span>The Road Ahead</button>
+    </nav>
+
+    <!-- In-page section nav (one pane per tab) -->
+    <div class="nav-wrap">
+      <div class="nav-title">On this page</div>
+
+      <nav class="nav-pane visible" id="nav-overview" aria-label="Overview sections">
+        <div class="spine">
+          <a href="#ov-who">Who we are</a>
+          <a href="#ov-vision">The vision</a>
+          <a href="#ov-principles">The principles</a>
+          <a href="#ov-leadership">Leadership</a>
+        </div>
+      </nav>
+      <nav class="nav-pane" id="nav-retreat" aria-label="Retreat sections">
+        <div class="spine">
+          <a href="#rt-why">Why we gathered</a>
+          <a href="#rt-agenda">The agenda</a>
+          <a href="#rt-transcripts">Full transcripts</a>
+        </div>
+      </nav>
+      <nav class="nav-pane" id="nav-s2" aria-label="Session 2 sections">
+        <div class="spine">
+          <a href="#s2-frame">The shift</a>
+          <a href="#s2-themes">Key themes</a>
+          <a href="#s2-impact">Global reach to local impact</a>
+          <a href="#s2-audiences">Value by audience</a>
+          <a href="#s2-specifics">Points raised</a>
+          <a href="#s2-takeaways">Key takeaways</a>
+        </div>
+      </nav>
+      <nav class="nav-pane" id="nav-s3" aria-label="Session 3 sections">
+        <div class="spine">
+          <a href="#s3-calendar">A calendar of opportunities</a>
+          <a href="#s3-prioritize">A way to prioritize</a>
+          <a href="#s3-arenas">Three arenas</a>
+          <a href="#s3-ready">Getting ready</a>
+          <a href="#s3-priorities">Priorities toward UNGA</a>
+          <a href="#s3-specifics">Points raised</a>
+        </div>
+      </nav>
+      <nav class="nav-pane" id="nav-themes" aria-label="Themes sections">
+        <div class="spine">
+          <a href="#th-threads">Five threads</a>
+          <a href="#th-edge">The movement's edge</a>
+        </div>
+      </nav>
+      <nav class="nav-pane" id="nav-road" aria-label="Road ahead sections">
+        <div class="spine">
+          <a href="#rd-priorities">Six workstreams</a>
+        </div>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- =======================================================================
+       MAIN
+       ======================================================================= -->
+  <main class="main" id="main">
+
+    <!-- ============================ TAB 1 — OVERVIEW ===================== -->
+    <section class="pane visible" id="pane-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
+      <div class="page-head">
+        <div class="crumb">A Land for All · ארץ لجميع · أرض للجميع</div>
+        <h2>Two States, One Homeland</h2>
+        <p class="lede">A joint Israeli–Palestinian movement advancing two sovereign states in a shared homeland — connected by a confederation built on equality, freedom of movement, and shared institutions.</p>
+      </div>
+
+      <!-- Stat row -->
+      <div class="statrow">
+        <div class="stat"><div class="k">2012</div><div class="l">Founded (formerly <em>Two States, One Homeland</em>)</div></div>
+        <div class="stat"><div class="k">May Pundak &amp; Dr. Rula Hardal</div><div class="l">Co-directors</div></div>
+        <div class="stat"><div class="k">Luxembourg Peace Prize</div><div class="l">Awarded 2021</div></div>
+        <div class="stat"><div class="k">Two states, one homeland</div><div class="l">Israeli Jews, Palestinian citizens of Israel &amp; Palestinians</div></div>
+      </div>
+
+      <section class="section" id="ov-who">
+        <div class="section-head"><h3>Who we are</h3></div>
+        <p class="lead-p">A Land for All (formerly <em>Two States, One Homeland</em>) is an Israeli–Palestinian movement that proposes a two-state confederation as the path out of the conflict. It brings together Israeli Jews, Palestinian citizens of Israel, and Palestinians around a shared premise: that the two peoples are not going anywhere, that neither will give up its claim to the whole land, and that the future therefore has to be built on partnership rather than separation alone.</p>
+      </section>
+
+      <section class="section" id="ov-vision">
+        <div class="section-head"><h3>The vision</h3></div>
+        <p>Two sovereign, independent states — Israel and Palestine, along the 1967 lines — linked in a confederation. Each state is self-governing, but an open border allows freedom of movement and residence: people could live across the homeland while voting where they hold citizenship. Jerusalem would be an open, shared capital of both states. Shared institutions would manage the questions that cross every border — security, water, climate, human rights, and the economy. The model is grounded in equality, dignity, interdependence, and security for both peoples.</p>
+
+        <!-- GRAPHIC: Confederation model -->
+        <div class="confed" role="img" aria-label="Confederation model: two sovereign states, Israel and Palestine, joined by an open border, under shared institutions, with Jerusalem as a shared open capital.">
+          <div class="confed-band">
+            <span class="cap">Shared institutions</span>
+            <div class="insts"><span>Security</span><span>Water</span><span>Climate</span><span>Human rights</span><span>Economy</span></div>
+          </div>
+          <div class="confed-stem"></div>
+          <div class="confed-states">
+            <div class="confed-state israel">
+              <div class="flag" aria-hidden="true"></div>
+              <div class="nm">Israel</div>
+              <div class="role">Sovereign state</div>
+              <p>Self-governing · along the 1967 lines</p>
+            </div>
+            <div class="confed-link">
+              <div class="ring" aria-hidden="true">↔</div>
+              <div class="lbl">Open border<br>Freedom of movement</div>
+            </div>
+            <div class="confed-state palestine">
+              <div class="flag" aria-hidden="true"></div>
+              <div class="nm">Palestine</div>
+              <div class="role">Sovereign state</div>
+              <p>Self-governing · along the 1967 lines</p>
+            </div>
+          </div>
+          <div class="confed-capital"><b>Jerusalem</b> — an open, shared capital of both states</div>
+        </div>
+      </section>
+
+      <section class="section" id="ov-principles">
+        <div class="section-head"><h3>The principles</h3></div>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M5 7l7-4 7 4M5 7v10l7 4 7-4V7"/></svg>
+            </div>
+            <div class="t">Self-determination</div>
+            <p>Two states, two flags, two national homes — full political independence for each people.</p>
+          </div>
+          <div class="pillar">
+            <div class="ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>
+            </div>
+            <div class="t">A shared homeland</div>
+            <p>Open borders and freedom of movement; the land stays whole even as sovereignty is divided.</p>
+          </div>
+          <div class="pillar">
+            <div class="ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 7a3 3 0 1 1 6 0 3 3 0 0 1-6 0zM4 20a5 5 0 0 1 16 0"/><path d="M2 11h3M19 11h3"/></svg>
+            </div>
+            <div class="t">Shared institutions</div>
+            <p>Joint bodies for the issues neither side can solve alone — security, economy, climate, water, rights.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="ov-leadership">
+        <div class="section-head"><h3>Leadership</h3></div>
+        <p>ALFA is led by co-directors <strong>May Pundak</strong>, an Israeli lawyer and activist, and <strong>Dr. Rula Hardal</strong>, a Palestinian citizen of Israel and political scientist — a genuinely shared, bi-national leadership that mirrors the movement's premise.</p>
+        <div class="gpanel" style="margin-top:1.2rem">
+          <div class="lead">"An agreement is only the beginning of a process — not the end of one. The work is to build the partnership that makes the vision real."</div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ TAB 2 — THE RETREAT ================= -->
+    <section class="pane" id="pane-retreat" role="tabpanel" aria-labelledby="tab-retreat" tabindex="0" hidden>
+      <div class="page-head">
+        <div class="crumb">Strategy Retreat · Day Two</div>
+        <h2>Sharpening the International Strategy</h2>
+        <p class="lede">Two days in which ALFA's staff, board, and assembly members — joined by colleagues from the International Peace Institute (IPI) — worked to focus the movement's international engagement and connect it to change on the ground.</p>
+      </div>
+
+      <section class="section" id="rt-why">
+        <div class="section-head"><h3>Why we gathered</h3></div>
+        <p class="lead-p">Over the past two years, ALFA's international work has expanded dramatically. The retreat's purpose was to move from <em>whether and where</em> the movement engages internationally to <em>how</em> — how to ensure that diplomatic engagement actually advances ALFA's goals and contributes to political change at home. The day brought board and assembly members into a conversation that ALFA staff and two colleagues from the <strong>International Peace Institute (IPI)</strong> — Emmanuel and Arthur — had begun the day before.</p>
+      </section>
+
+      <section class="section" id="rt-agenda">
+        <div class="section-head"><h3>The agenda</h3><span class="tag">Day Two</span></div>
+        <!-- GRAPHIC: vertical agenda spine -->
+        <div class="agenda">
+          <div class="ag-item">
+            <div class="h">Opening — Shifting geopolitics</div>
+            <div class="who">Facilitated by Dahlia, in conversation with Oren and Omar</div>
+            <p>A conversation on the changing global landscape and what it means for ALFA's strategy.</p>
+          </div>
+          <div class="ag-item">
+            <div class="h">Session 2 — Debrief &amp; review</div>
+            <div class="who">Facilitated by Arthur and Rula</div>
+            <p>Takeaways from the review of diplomatic engagement, the SWOT analysis, and stakeholder mapping — with an invitation to challenge the assumptions.</p>
+          </div>
+          <div class="ag-item">
+            <div class="h">Session 3 — Strategic planning</div>
+            <div class="who">Facilitated by Mushon and Arthur</div>
+            <p>Scenarios and priorities for the year ahead.</p>
+          </div>
+          <div class="ag-item">
+            <div class="h">Close — Reflections &amp; next steps</div>
+            <div class="who">Facilitated by May</div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:1.4rem">This site summarizes Sessions 2 and 3. Summaries are thematic and intentionally high-level; they convey the movement's strategic thinking without internal detail.</div>
+      </section>
+
+      <section class="section" id="rt-transcripts">
+        <div class="section-head"><h3>Full transcripts</h3></div>
+        <!-- GRAPHIC: transcripts widget -->
+        <div class="tw">
+          <div class="tw-head">
+            <h4>Full session transcripts</h4>
+            <p>The complete recordings, transcribed into English. Verbatim records — for the curated version, read the summaries above.</p>
+          </div>
+          <div class="tw-row">
+            <div class="doc" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+            </div>
+            <div class="meta"><div class="t">Session 2 · Taking Stock</div><div class="d">~82 min</div></div>
+            <div class="acts">
+              <a class="btn view" data-tr="s2-view" href="session-2-transcript.html" target="_blank" rel="noopener">View</a>
+              <a class="btn dl" data-tr="s2-dl" href="session-2-transcript.docx" download>Download Word</a>
+            </div>
+          </div>
+          <div class="tw-row">
+            <div class="doc" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+            </div>
+            <div class="meta"><div class="t">Session 3 · The Year Ahead</div><div class="d">~98 min</div></div>
+            <div class="acts">
+              <a class="btn view" data-tr="s3-view" href="session-3-transcript.html" target="_blank" rel="noopener">View</a>
+              <a class="btn dl" data-tr="s3-dl" href="session-3-transcript.docx" download>Download Word</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ TAB 3 — SESSION 2 ================== -->
+    <section class="pane" id="pane-s2" role="tabpanel" aria-labelledby="tab-s2" tabindex="0" hidden>
+      <div class="page-head">
+        <div class="crumb">Session 2 · International Engagement Review</div>
+        <h2>Taking Stock of Two Years on the Global Stage</h2>
+        <p class="lede">A candid review of what ALFA has learned from two years of international policy engagement — what is working, where the harder questions now lie, and how global reach can translate into change at home.</p>
+      </div>
+
+      <section class="section" id="s2-frame">
+        <div class="gpanel">
+          <div class="lead">ALFA has moved from <em>being introduced</em> to <em>being asked tougher questions</em>.</div>
+          <p>The task now is to match a compelling vision with the policy depth, the messaging discipline, and the local roots that turn recognition into influence.</p>
+        </div>
+      </section>
+
+      <section class="section" id="s2-themes">
+        <div class="section-head"><h3>Key themes</h3></div>
+        <details class="acc" open>
+          <summary><span class="acc-num">1</span><span style="flex:1">From introductions to asks</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>For two years the goal was largely to be <em>known</em> — to get ALFA and its vision into the room. The movement has succeeded: most relevant international actors now know ALFA and are beginning to understand its vision, and increasingly treat it as a resource. That success creates a new task. The question is no longer just being seen; it is being clear about what ALFA actually <em>wants</em> from each actor — and, just as importantly, what it can <em>offer</em> them.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span class="acc-num">2</span><span style="flex:1">The credibility test</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>With recognition come harder questions. Interlocutors want more than a vision; they want policy depth — concrete answers on sequencing, security, mobility, and "what now," especially against the backdrop of Gaza and the West Bank. Meeting that demand means investing in research and policy, and widening the bench of people who can speak for the movement so that audiences hear fresh voices and new angles, not the same messenger each time.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span class="acc-num">3</span><span style="flex:1">The messaging tension</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Diplomats expect, and cling to, the language of <em>two states</em>; anything that sounds like it threatens that framing makes them nervous. ALFA's fuller vision — a confederation, one shared homeland, freedom of movement — has to be conveyed without losing those audiences. The working answer that emerged: hold the two-state frame as the door, and the confederation as the room behind it — "two states, but adaptive" — tailoring emphasis to each audience without misrepresenting the vision.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span class="acc-num">4</span><span style="flex:1">What ALFA uniquely offers</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>ALFA's distinctive value is not "another plan." It is a whole worldview — a set of values, norms, and practices, and a recognition that an agreement is only the <em>beginning</em>. The central lesson of Oslo was that everything happened at the level of leaders, leaving a gap between the framework and the societies. ALFA's answer is to build the practices of partnership now — joint projects, shared institutions, "shadow" structures and assemblies — so that the vision is embodied, not just signed.</p></div>
+        </details>
+      </section>
+
+      <section class="section" id="s2-impact">
+        <div class="section-head"><h3>From global reach to local impact</h3></div>
+        <p>The hardest question of the session: how to translate international progress into change at home. Participants framed impact on three levels, and noted that engagement abroad only matters if it moves these levels at home.</p>
+        <!-- GRAPHIC: three nested levels of impact -->
+        <div class="nested" role="img" aria-label="Three nested levels of local impact: grassroots public, grass-tops movements and organizations, and political elites.">
+          <div class="nl nl1"><div class="t">Grassroots</div><div class="d">The public in both societies</div></div>
+          <div class="nl nl2"><div class="t">Grass-tops</div><div class="d">Other movements, organizations &amp; experts</div></div>
+          <div class="nl nl3"><div class="t">Political elites</div><div class="d">Decision-makers in Israel and Palestine</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-audiences">
+        <div class="section-head"><h3>Different value for different audiences</h3></div>
+        <!-- GRAPHIC: three audience cards -->
+        <div class="pillars">
+          <div class="pillar">
+            <div class="ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H7l-3 3z"/><path d="M8 9h8M8 12h5"/></svg>
+            </div>
+            <div class="t">Narrative</div>
+            <p>Politicians and publics respond to a compelling story; this is where communications, media, and social media matter.</p>
+          </div>
+          <div class="pillar">
+            <div class="ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"/><path d="M9 8h4M9 12h7M9 16h7"/></svg>
+            </div>
+            <div class="t">Policy depth</div>
+            <p>Diplomats want precise, comparative, implementable proposals; this is the work of the policy team.</p>
+          </div>
+          <div class="pillar">
+            <div class="ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>
+            </div>
+            <div class="t">Regional integration &amp; security</div>
+            <p>Regional actors are drawn to a frame of integration, stability, and security that also addresses the Palestinian question.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s2-specifics">
+        <div class="section-head"><h3>Points raised in discussion</h3><span class="tag">Internal</span></div>
+        <details class="acc">
+          <summary><span style="flex:1">"Two states" as a misnomer — and "rescue"</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Participants argued the heart of the matter is Palestinian independence — an asymmetry between the peoples, not a symmetry — and framed the confederation as a <em>rescue</em> of both a Palestinian and a Jewish future, language that aligns with international law.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Talk to confederations</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Federal and confederal precedents — Switzerland, Canada, Belgium, the EU, the UK — are natural reference points and potential allies for the model; "two states, one homeland / ALFA" works as a memorable hook.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Movement is possible</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>J Street's drift away from a rigid two-state framing toward new articulations — partly credited to years of ALFA engagement — was cited as proof the conversation can shift.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">An under-used constituency</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Palestinian citizens of Israel ('48 Palestinians) were seen as natural champions of the confederation agenda and an under-invested base.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">The sanctions debate</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Whether ALFA should publicly back sanctions or accountability measures on Israel keeps surfacing in international forums (e.g., Paris). It was debated sharply, with a strong line of argument that taking it on would distract from — and dilute — ALFA's distinctive offer.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Tailoring the offer</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Shaping the "ask/offer" per audience — Gulf and regional actors (integration &amp; security), European and US progressive politics (narrative), diplomats (policy depth) — without misrepresenting the vision.</p></div>
+        </details>
+      </section>
+
+      <section class="section" id="s2-takeaways">
+        <div class="callout">
+          <h4>Key takeaways</h4>
+          <ul class="clean">
+            <li>Be clear about the <b>ask</b> and the <b>offer</b> in every engagement.</li>
+            <li>Invest in policy depth and a wider bench of spokespeople.</li>
+            <li>Hold "two states" as the frame; carry the confederation within it.</li>
+            <li>An agreement is a beginning — build the practices now.</li>
+            <li>Measure success by impact at home, on all three levels.</li>
+          </ul>
+        </div>
+
+        <!-- Transcript strip -->
+        <div class="tw-strip">
+          <div class="lbl">📄 <b>Read the full Session 2 transcript</b> (~82 min)</div>
+          <a class="btn view" data-tr="s2-view" href="session-2-transcript.html" target="_blank" rel="noopener">View</a>
+          <a class="btn dl" data-tr="s2-dl" href="session-2-transcript.docx" download>Download Word</a>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ TAB 4 — SESSION 3 ================== -->
+    <section class="pane" id="pane-s3" role="tabpanel" aria-labelledby="tab-s3" tabindex="0" hidden>
+      <div class="page-head">
+        <div class="crumb">Session 3 · Strategic Planning</div>
+        <h2>Planning the Year Ahead</h2>
+        <p class="lede">Turning reflection into a plan — mapping the year's international moments, choosing where to invest, and naming the priorities that have to be ready in time.</p>
+      </div>
+
+      <section class="section" id="s3-calendar">
+        <div class="section-head"><h3>A calendar of opportunities</h3></div>
+        <p>The year ahead offers a sequence of international moments. The <strong>UN General Assembly</strong> in New York (September) is the anchor. Around it: the <strong>Paris Peace Forum</strong>, the <strong>Munich Security Conference</strong>, the <strong>Doha Forum</strong>, the <strong>BRICS</strong> summit, and the <strong>Global Alliance</strong> process on implementing the two-state solution — alongside <strong>elections</strong> in Israel and the <strong>US midterms</strong>. On the horizon: the <strong>80th anniversary of the UN Partition resolution (29 November 2027)</strong> as a longer-term mobilization point.</p>
+
+        <!-- GRAPHIC: horizontal calendar timeline -->
+        <div class="timeline" role="img" aria-label="International calendar: Now, then the UN General Assembly in September in New York as the anchor, then the Paris Peace Forum, Munich Security Conference, Doha Forum, and on the horizon the 80th anniversary of the UN Partition resolution on 29 November 2027.">
+          <div class="tl-node"><span class="dot"></span><span class="when">Now</span><span class="what">Today</span></div>
+          <div class="tl-node anchor"><span class="dot"></span><span class="when">September · New York</span><span class="what">UN General Assembly</span></div>
+          <div class="tl-node"><span class="dot"></span><span class="when">Autumn</span><span class="what">Paris Peace Forum</span></div>
+          <div class="tl-node"><span class="dot"></span><span class="when">Winter</span><span class="what">Munich Security Conference</span></div>
+          <div class="tl-node"><span class="dot"></span><span class="when">Winter</span><span class="what">Doha Forum</span></div>
+          <div class="tl-node muted"><span class="dot"></span><span class="when">…</span><span class="what">and beyond</span></div>
+          <div class="tl-node"><span class="dot"></span><span class="when">29 Nov 2027</span><span class="what">80th anniversary · UN Partition resolution</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="s3-prioritize">
+        <div class="section-head"><h3>A way to prioritize</h3></div>
+        <p>ALFA is a small organization; it cannot be the star of every event. For each opportunity the movement asks four questions:</p>
+        <!-- GRAPHIC: four questions card -->
+        <div class="fourq">
+          <div class="q"><span class="n">1</span><span class="qt">Why is this an opportunity for us?</span></div>
+          <div class="q"><span class="n">2</span><span class="qt">What does it require of us?</span></div>
+          <div class="q"><span class="n">3</span><span class="qt">What do we get?</span></div>
+          <div class="q"><span class="n">4</span><span class="qt">What do we give?</span></div>
+        </div>
+        <div class="note" style="margin-top:1rem">The discipline is to invest where effort <b>compounds</b> — where preparing for one moment also serves the next — and to <b>start with one</b> (the UNGA) rather than spread thin.</div>
+      </section>
+
+      <section class="section" id="s3-arenas">
+        <div class="section-head"><h3>Three arenas of engagement</h3></div>
+        <!-- GRAPHIC: pyramid -->
+        <div class="pyramid" role="img" aria-label="Three arenas of engagement, from high-level ministerial settings, to working-level closed-door expert discussions, to bilateral one-to-one meetings.">
+          <div class="pyr-tier t1"><div class="t">High-level</div><div class="d">Ministerial settings — the Middle East dinner, Munich, Davos</div></div>
+          <div class="pyr-tier t2"><div class="t">Working-level</div><div class="d">Closed-door, expert, Chatham-House-style discussions, often with partners</div></div>
+          <div class="pyr-tier t3"><div class="t">Bilateral</div><div class="d">One-to-one meetings — in New York and on the road</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="s3-ready">
+        <div class="section-head"><h3>Getting ready — the "how"</h3></div>
+        <details class="acc">
+          <summary><span style="flex:1">What it takes to be ready for the moments</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body">
+            <ul class="clean">
+              <li><b>A tracking mechanism</b> so engagements build year to year and no one "goes cold" — even when the person representing ALFA changes.</li>
+              <li><b>Audience-specific preparation</b> — know who is in the room, what resonated last time, and which one or two points to lead with.</li>
+              <li><b>Coordination</b> with other Israeli–Palestinian actors attending the same forums, so ALFA's vision gets named on panels.</li>
+              <li><b>A wider bench of speakers</b>, trained through an apprenticeship model (an experienced voice mentoring a newer one).</li>
+              <li><b>Better documentation</b> — capturing interventions on video and in writing so the work can be shown and reused.</li>
+              <li><b>Research into policy</b> — turning the movement's research into short, digestible memos that member states can actually use.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" id="s3-priorities">
+        <div class="section-head"><h3>Priorities toward the UNGA</h3><span class="tag">Focus</span></div>
+        <p>Four priorities converged as the focus for the months before the General Assembly:</p>
+        <div class="grid c2">
+          <div class="card"><h4>Name the regional moment</h4><p>The conflict has become a regional one; ALFA can speak to integration, stability, and security as the frame that also addresses the Palestinian question — and to its urgency.</p></div>
+          <div class="card"><h4>"No return to the status quo"</h4><p>Around the elections, press the case that a new government must not slide back to merely <em>managing</em> the conflict — and that a legitimate, elected partner is needed on both sides.</p></div>
+          <div class="card"><h4>Transformative recognition</h4><p>Recognition of a Palestinian state is a beginning, not an end; the priority is to articulate what comes <em>after</em> recognition — the steps, relations, and obligations that follow.</p></div>
+          <div class="card"><h4>Anniversaries as anchors</h4><p>Recent diplomatic plans and, further out, the 2027 Partition anniversary offer natural moments to reframe the conversation.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s3-specifics">
+        <div class="section-head"><h3>Points raised in discussion</h3><span class="tag">Internal</span></div>
+        <details class="acc">
+          <summary><span style="flex:1">The 80th anniversary of UN Resolution 181</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>The Partition Plan — "two states <em>and</em> an economic union," essentially ALFA's plan — marks its 80th anniversary on <b>29 November 2027</b>, offering an 18-month mobilization horizon for civil society, the Arab League, and the EU.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Transformative recognition of Palestine</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Recognition as a beginning; position papers on what <em>follows</em> recognition — diplomatic and economic relations, obligations, and liberation from occupation.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">The Trump-plan one-year anniversary</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>A hook to comment on the impasse and propose a direction.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Munich — "alternatives to security"</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Orchestrate a panel on security beyond walls and checkpoints, where ALFA actually has something to say.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Palestinian elections</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Demand free elections in Palestine (and Israel) so there is a legitimate, elected partner; encourage ALFA-aligned figures — especially Palestinian citizens of Israel — to participate.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Keep civil society in the room</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Press international actors to keep engaging civil society even when they can't engage a given government.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Research → policy</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>With IPI, turn the working-group research (security, economy, and more) into short memos digestible to member states.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Scenarios to watch</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Two developments could reshape everything in the coming months — continued regional escalation (Lebanon, Gaza) and the outcome of elections. The plan has to be robust to a landscape that may look very different within weeks.</p></div>
+        </details>
+
+        <div class="note" style="margin-top:1.4rem"><b>Working better together.</b> A recurring reflection: replace last-minute scrambling with longer-term, collective planning, and keep the international and domestic strands connected — in partnership with IPI. The aim is to institutionalize this kind of strategic session, not treat it as a one-off.</div>
+
+        <!-- Transcript strip -->
+        <div class="tw-strip">
+          <div class="lbl">📄 <b>Read the full Session 3 transcript</b> (~98 min)</div>
+          <a class="btn view" data-tr="s3-view" href="session-3-transcript.html" target="_blank" rel="noopener">View</a>
+          <a class="btn dl" data-tr="s3-dl" href="session-3-transcript.docx" download>Download Word</a>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ TAB 5 — THEMES ===================== -->
+    <section class="pane" id="pane-themes" role="tabpanel" aria-labelledby="tab-themes" tabindex="0" hidden>
+      <div class="page-head">
+        <div class="crumb">What We Heard</div>
+        <h2>Cross-Cutting Conclusions</h2>
+        <p class="lede">Five threads ran through both sessions.</p>
+      </div>
+
+      <section class="section" id="th-threads">
+        <div class="numcards">
+          <div class="numcard"><div class="num">1</div><div class="body"><h4>The vision needs a credible "how."</h4><p>A compelling destination is not enough; ALFA must show the path — a sequence and a theory of change, beginning with ending the occupation and recognition.</p></div></div>
+          <div class="numcard"><div class="num">2</div><div class="body"><h4>Two states as the door, confederation as the room.</h4><p>Adaptive messaging that meets audiences where they are without diluting the vision.</p></div></div>
+          <div class="numcard"><div class="num">3</div><div class="body"><h4>Global engagement only matters if it changes things at home.</h4><p>Impact runs through political elites, grass-tops, and grassroots — in both societies.</p></div></div>
+          <div class="numcard"><div class="num">4</div><div class="body"><h4>Protect what is distinctive.</h4><p>ALFA is the rare cross-border, bi-national political movement with a positive vision; that distinctiveness should not be traded away by absorbing other agendas.</p></div></div>
+          <div class="numcard"><div class="num">5</div><div class="body"><h4>Capacity and process are strategy.</h4><p>A dedicated international function, a tracking system, a wider bench of voices, better documentation, and longer-term planning are not "admin" — they are how the vision travels.</p></div></div>
+        </div>
+      </section>
+
+      <section class="section" id="th-edge">
+        <div class="gpanel">
+          <div class="lead">The movement's edge is not a better slogan; it is a different way of thinking about the conflict — and the discipline to make it concrete.</div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ TAB 6 — ROAD AHEAD ================= -->
+    <section class="pane" id="pane-road" role="tabpanel" aria-labelledby="tab-road" tabindex="0" hidden>
+      <div class="page-head">
+        <div class="crumb">Forward Agenda</div>
+        <h2>The Road Ahead</h2>
+        <p class="lede">Six workstreams carry the retreat's thinking into the year — sequenced, with the UN General Assembly first.</p>
+      </div>
+
+      <section class="section" id="rd-priorities">
+        <div class="roadgrid">
+          <div class="numcard"><div class="num">1</div><div class="body"><h4>Sharpen the "how."</h4><p>Develop the theory of change and sequencing — ending the occupation and recognition as the first step toward the confederation vision.</p></div></div>
+          <div class="numcard"><div class="num">2</div><div class="body"><h4>Build the international function.</h4><p>A clear strategy, dedicated capacity, and a tracking mechanism for engagements.</p></div></div>
+          <div class="numcard"><div class="num">3</div><div class="body"><h4>Deepen policy depth.</h4><p>Position papers and short memos on security, recognition, and regional integration.</p></div></div>
+          <div class="numcard"><div class="num">4</div><div class="body"><h4>Widen the bench &amp; tell the story.</h4><p>More trained spokespeople; stronger documentation and communications.</p></div></div>
+          <div class="numcard"><div class="num">5</div><div class="body"><h4>Anchor globally, act locally.</h4><p>Translate engagement into impact across elites, grass-tops, and grassroots.</p></div></div>
+          <div class="numcard"><div class="num">6</div><div class="body"><h4>Prepare for the moments.</h4><p>UNGA first; then Paris, Munich, and Doha; with 2027 on the horizon.</p></div></div>
+        </div>
+
+        <div class="note" style="margin-top:1.6rem">Specific internal action items were intentionally generalized for this public summary. The priorities above reflect the direction set at the retreat.</div>
+      </section>
+    </section>
+
+    <!-- ============================ FOOTER ============================= -->
+    <footer>
+      <div class="l">A Land for All — Retreat Summary · An overview of the movement and its international strategy discussions.</div>
+      <div class="r">Summaries are thematic and were prepared from session recordings. For the movement's official positions, see <a href="https://www.alandforall.org/english" target="_blank" rel="noopener">alandforall.org</a>. Last updated: June 2026.</div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+/* =========================================================================
+   CONFIG
+   ------------------------------------------------------------------------
+   Password gate is CLIENT-SIDE DETERRENCE ONLY: the password and content
+   ship in the file. For real access control use server-side auth or a host
+   with built-in access control (see the spec, Part 8).
+
+   The transcript links live in one place (TRANSCRIPTS) so they can be
+   swapped later — e.g. for password-gated paths — without hunting through
+   the markup. On load they are applied to every [data-tr] link.
+   ========================================================================= */
+const PASSWORD = "RETREAT2026"; // <-- change this
+
+const TRANSCRIPTS = {
+  "s2-view": "session-2-transcript.html",
+  "s2-dl":   "session-2-transcript.docx",
+  "s3-view": "session-3-transcript.html",
+  "s3-dl":   "session-3-transcript.docx"
+};
+
+/* ---- Apply transcript links from config ---- */
+document.querySelectorAll('[data-tr]').forEach(function(a){
+  var key = a.getAttribute('data-tr');
+  if(TRANSCRIPTS[key]) a.setAttribute('href', TRANSCRIPTS[key]);
+});
+
+/* =========================================================================
+   PASSWORD GATE
+   Shares the sessionStorage key "alfa_unlocked" with the transcript pages,
+   so one unlock covers the whole site for the session.
+   ========================================================================= */
+var gate   = document.getElementById('gate');
+var gateIn = document.getElementById('gate-input');
+var gateErr= document.getElementById('gate-err');
+
+function lockScroll(on){ document.body.style.overflow = on ? 'hidden' : ''; }
+
+function unlock(){
+  gate.classList.add('hidden');
+  lockScroll(false);
+  try{ sessionStorage.setItem('alfa_unlocked','1'); }catch(e){}
+}
+
+function checkPass(){
+  if(gateIn.value === PASSWORD){
+    unlock();
+  }else{
+    gateErr.textContent = "Incorrect password. Please try again.";
+    gateIn.value = '';
+    gateIn.focus();
+  }
+}
+
+/* If already unlocked this session, skip the gate; otherwise lock + focus. */
+try{
+  if(sessionStorage.getItem('alfa_unlocked') === '1'){
+    unlock();
+  }else{
+    lockScroll(true);
+  }
+}catch(e){ lockScroll(true); }
+
+document.getElementById('gate-btn').addEventListener('click', checkPass);
+gateIn.addEventListener('keydown', function(e){ if(e.key === 'Enter') checkPass(); });
+window.addEventListener('DOMContentLoaded', function(){
+  if(!gate.classList.contains('hidden')) gateIn.focus();
+});
+
+/* =========================================================================
+   TABS  — show/hide panes, sync ARIA, deep-link via #hash
+   ========================================================================= */
+var TABS = ['overview','retreat','s2','s3','themes','road'];
+
+function switchTab(which, updateHash){
+  if(TABS.indexOf(which) === -1) which = 'overview';
+  TABS.forEach(function(t){
+    var on   = (t === which);
+    var pane = document.getElementById('pane-'+t);
+    var nav  = document.getElementById('nav-'+t);
+    var btn  = document.getElementById('tab-'+t);
+    pane.classList.toggle('visible', on);
+    pane.hidden = !on;
+    nav.classList.toggle('visible', on);
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  if(updateHash !== false){
+    try{ history.replaceState(null, '', '#'+which); }catch(e){ location.hash = which; }
+  }
+  closeMenu();
+  window.scrollTo({top:0, behavior:'auto'});
+}
+
+document.querySelectorAll('.tab-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){ switchTab(btn.getAttribute('data-tab')); });
+});
+
+/* On load: open the tab from the hash (a tab key, or a section inside a tab). */
+(function initFromHash(){
+  var h = (location.hash || '').replace('#','');
+  if(!h){ return; }
+  if(TABS.indexOf(h) !== -1){ switchTab(h, false); return; }
+  // Otherwise it may be a section anchor inside a pane — find its pane.
+  var el = document.getElementById(h);
+  if(el){
+    var pane = el.closest('.pane');
+    if(pane){
+      switchTab(pane.id.replace('pane-',''), false);
+      setTimeout(function(){ el.scrollIntoView(); }, 60);
+    }
+  }
+})();
+
+/* =========================================================================
+   IN-PAGE NAV — smooth scroll + scrollspy (active section highlight)
+   ========================================================================= */
+document.querySelectorAll('.spine a').forEach(function(a){
+  a.addEventListener('click', function(e){
+    var id = a.getAttribute('href').slice(1);
+    var target = document.getElementById(id);
+    if(target){
+      e.preventDefault();
+      // Make sure the target's tab is active first.
+      var pane = target.closest('.pane');
+      if(pane && !pane.classList.contains('visible')){
+        switchTab(pane.id.replace('pane-',''));
+      }
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+      closeMenu();
+    }
+  });
+});
+
+var spyLinks = [].slice.call(document.querySelectorAll('.spine a'));
+var spyTargets = spyLinks
+  .map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); })
+  .filter(Boolean);
+
+if('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        spyLinks.forEach(function(l){
+          l.classList.toggle('active', l.getAttribute('href') === '#'+en.target.id);
+        });
+      }
+    });
+  }, {rootMargin:'-12% 0px -72% 0px'});
+  spyTargets.forEach(function(t){ io.observe(t); });
+}
+
+/* =========================================================================
+   MOBILE MENU — hamburger opens the off-canvas sidebar
+   ========================================================================= */
+var sidebar   = document.getElementById('sidebar');
+var hamburger = document.getElementById('hamburger');
+var backdrop  = document.getElementById('backdrop');
+
+function openMenu(){
+  sidebar.classList.add('open');
+  backdrop.classList.add('show');
+  hamburger.setAttribute('aria-expanded','true');
+}
+function closeMenu(){
+  sidebar.classList.remove('open');
+  backdrop.classList.remove('show');
+  hamburger.setAttribute('aria-expanded','false');
+}
+hamburger.addEventListener('click', function(){
+  sidebar.classList.contains('open') ? closeMenu() : openMenu();
+});
+backdrop.addEventListener('click', closeMenu);
+</script>
+</body>
+</html>
