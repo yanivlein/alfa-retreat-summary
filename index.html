@@ -391,6 +391,8 @@ ul.clean li b{color:var(--ink)}
 .ag-item .h{font-family:var(--font-display);font-weight:700;color:var(--ink);font-size:1.06rem}
 .ag-item .who{font-size:.8rem;color:var(--sage-deep);font-weight:600;margin-top:.05rem}
 .ag-item p{font-size:.9rem;margin-top:.2rem}
+.ag-item .h a.tablink{color:var(--ink);text-decoration:none;border-bottom:1px dashed var(--sage-deep);transition:color .15s,border-color .15s}
+.ag-item .h a.tablink:hover{color:var(--sage-deep);border-color:var(--sage-deep)}
 
 /* =========================================================================
    CUSTOM GRAPHIC — Horizontal calendar timeline
@@ -622,10 +624,11 @@ footer a{color:var(--sage-deep)}
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button class="tab-btn active" id="tab-overview" role="tab" aria-selected="true" aria-controls="pane-overview" data-tab="overview"><span class="ix">01</span>Overview</button>
       <button class="tab-btn" id="tab-retreat" role="tab" aria-selected="false" aria-controls="pane-retreat" data-tab="retreat"><span class="ix">02</span>The Retreat</button>
-      <button class="tab-btn" id="tab-s2" role="tab" aria-selected="false" aria-controls="pane-s2" data-tab="s2"><span class="ix">03</span>Session 2 · Taking Stock</button>
-      <button class="tab-btn" id="tab-s3" role="tab" aria-selected="false" aria-controls="pane-s3" data-tab="s3"><span class="ix">04</span>Session 3 · The Year Ahead</button>
-      <button class="tab-btn" id="tab-themes" role="tab" aria-selected="false" aria-controls="pane-themes" data-tab="themes"><span class="ix">05</span>Themes &amp; Conclusions</button>
-      <button class="tab-btn" id="tab-road" role="tab" aria-selected="false" aria-controls="pane-road" data-tab="road"><span class="ix">06</span>The Road Ahead</button>
+      <button class="tab-btn" id="tab-s1" role="tab" aria-selected="false" aria-controls="pane-s1" data-tab="s1"><span class="ix">03</span>Session 1 · Shifting Geopolitics</button>
+      <button class="tab-btn" id="tab-s2" role="tab" aria-selected="false" aria-controls="pane-s2" data-tab="s2"><span class="ix">04</span>Session 2 · Taking Stock</button>
+      <button class="tab-btn" id="tab-s3" role="tab" aria-selected="false" aria-controls="pane-s3" data-tab="s3"><span class="ix">05</span>Session 3 · The Year Ahead</button>
+      <button class="tab-btn" id="tab-themes" role="tab" aria-selected="false" aria-controls="pane-themes" data-tab="themes"><span class="ix">06</span>Themes &amp; Conclusions</button>
+      <button class="tab-btn" id="tab-road" role="tab" aria-selected="false" aria-controls="pane-road" data-tab="road"><span class="ix">07</span>The Road Ahead</button>
     </nav>
 
     <!-- In-page section nav (one pane per tab) -->
@@ -645,6 +648,15 @@ footer a{color:var(--sage-deep)}
           <a href="#rt-why">Why we gathered</a>
           <a href="#rt-agenda">The agenda</a>
           <a href="#rt-transcripts">Full transcripts</a>
+        </div>
+      </nav>
+      <nav class="nav-pane" id="nav-s1" aria-label="Session 1 sections">
+        <div class="spine">
+          <a href="#s1-frame">The shift</a>
+          <a href="#s1-themes">Key themes</a>
+          <a href="#s1-where">Openings</a>
+          <a href="#s1-specifics">Points raised</a>
+          <a href="#s1-takeaways">Key takeaways</a>
         </div>
       </nav>
       <nav class="nav-pane" id="nav-s2" aria-label="Session 2 sections">
@@ -669,7 +681,7 @@ footer a{color:var(--sage-deep)}
       </nav>
       <nav class="nav-pane" id="nav-themes" aria-label="Themes sections">
         <div class="spine">
-          <a href="#th-threads">Five threads</a>
+          <a href="#th-threads">Seven threads</a>
           <a href="#th-edge">The movement's edge</a>
         </div>
       </nav>
@@ -704,7 +716,7 @@ footer a{color:var(--sage-deep)}
 
       <section class="section" id="ov-who">
         <div class="section-head"><h3>Who we are</h3></div>
-        <p class="lead-p">A Land for All (formerly <em>Two States, One Homeland</em>) is an Israeli–Palestinian movement that proposes a two-state confederation as the path out of the conflict. It brings together Israeli Jews, Palestinian citizens of Israel, and Palestinians around a shared premise: that the two peoples are not going anywhere, that neither will give up its claim to the whole land, and that the future therefore has to be built on partnership rather than separation alone.</p>
+        <p class="lead-p">A Land for All (formerly <em>Two States, One Homeland</em>) is an Israeli–Palestinian movement that proposes a two-state confederation as the path out of the conflict. It brings together Israeli Jews, Palestinian citizens of Israel, and Palestinians around a shared premise: that the two peoples are not going anywhere, that neither will give up its claim to the whole land, and that the future therefore has to be built on partnership rather than separation alone. ALFA argues that a fraying international order makes a supranational, bi-national approach more necessary, not less.</p>
       </section>
 
       <section class="section" id="ov-vision">
@@ -794,7 +806,7 @@ footer a{color:var(--sage-deep)}
         <!-- GRAPHIC: vertical agenda spine -->
         <div class="agenda">
           <div class="ag-item">
-            <div class="h">Opening — Shifting geopolitics</div>
+            <div class="h"><a class="tablink" href="#s1-frame">Opening — Shifting geopolitics</a></div>
             <div class="who">Facilitated by Dahlia, in conversation with Oren and Omar</div>
             <p>A conversation on the changing global landscape and what it means for ALFA's strategy.</p>
           </div>
@@ -814,7 +826,7 @@ footer a{color:var(--sage-deep)}
           </div>
         </div>
 
-        <div class="note" style="margin-top:1.4rem">This site summarizes Sessions 2 and 3. Summaries are thematic and intentionally high-level; they convey the movement's strategic thinking without internal detail.</div>
+        <div class="note" style="margin-top:1.4rem">This site summarizes Sessions 1, 2, and 3. Summaries are thematic and intentionally high-level; they convey the movement's strategic thinking without internal detail.</div>
       </section>
 
       <section class="section" id="rt-transcripts">
@@ -824,6 +836,16 @@ footer a{color:var(--sage-deep)}
           <div class="tw-head">
             <h4>Full session transcripts</h4>
             <p>The complete recordings, transcribed into English. Verbatim records — for the curated version, read the summaries above.</p>
+          </div>
+          <div class="tw-row">
+            <div class="doc" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+            </div>
+            <div class="meta"><div class="t">Session 1 · Shifting Geopolitics</div><div class="d">~90 min</div></div>
+            <div class="acts">
+              <a class="btn view" data-tr="s1-view" href="session-1-transcript.html" target="_blank" rel="noopener">View</a>
+              <a class="btn dl" data-tr="s1-dl" href="session-1-transcript.docx" download>Download Word</a>
+            </div>
           </div>
           <div class="tw-row">
             <div class="doc" aria-hidden="true">
@@ -849,7 +871,101 @@ footer a{color:var(--sage-deep)}
       </section>
     </section>
 
-    <!-- ============================ TAB 3 — SESSION 2 ================== -->
+    <!-- ============================ TAB 3 — SESSION 1 ================== -->
+    <section class="pane" id="pane-s1" role="tabpanel" aria-labelledby="tab-s1" tabindex="0" hidden>
+      <div class="page-head">
+        <div class="crumb">Session 1 · Opening Panel</div>
+        <h2>Shifting Geopolitics</h2>
+        <p class="lede">A panel on the changing global order — the erosion of international institutions and human-rights norms, the rise of unilateral and digital power, and resurgent nationalism — and what that shift opens up for ALFA. Facilitated by Dahlia, in conversation with Omar and Oren.</p>
+      </div>
+
+      <section class="section" id="s1-frame">
+        <div class="gpanel">
+          <div class="lead">"The pillars are still there, but the walls are crumbling."</div>
+          <p>The post-1945 order is fraying — yet the very failure of unilateralism, and an unprecedented surge of civil-society mobilization, may open space for ALFA's supranational, bi-national approach.</p>
+        </div>
+      </section>
+
+      <section class="section" id="s1-themes">
+        <div class="section-head"><h3>Key themes</h3></div>
+        <details class="acc" open>
+          <summary><span class="acc-num">1</span><span style="flex:1">A fraying international order</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>The UN Security Council has been weakening since the 1990s (Rwanda, Bosnia, the strikes on Serbia and Iraq; later Iran and Ukraine), and great-power cooperation has given way to confrontation. Regional institutions like the EU have taken heavy blows, and there is a real chance several major European states will soon be led by nationalist governments skeptical of supranational governance — because, to many publics, these institutions came to serve elites rather than people.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span class="acc-num">2</span><span style="flex:1">Human rights in retreat</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>The human-rights layer built since 1945 is fraying into apathy and selectivity. A recurring critique: human rights are seen as a "Western enterprise" — hypocritical and inconsistently applied — which corrodes their authority, especially among a younger generation. And the panel stressed that this is inseparable from historic economic inequality: the West built welfare states while much of the Global South got "human rights and institutions" alongside painful neoliberal reforms.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span class="acc-num">3</span><span style="flex:1">New forces — unilateral and digital</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Two newer forces reshape the field. First, a United States acting as a "unilateral empire" — a pattern that predates, and outlasts, any single administration. Second, an emerging digital order in which a handful of technology companies command data, surveillance, and resources at a scale states struggle to match, optimizing for users rather than rights. Alongside these, a multipolar drift (rising powers; shifting strategic geographies) raises the question of whether the <em>system</em> is changing or only the balance of power within it.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span class="acc-num">4</span><span style="flex:1">How it lands in Israel–Palestine</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>These global shifts concentrate locally: a sidelined Security Council, reduced international coordination, and a stark contrast between how the world once confronted apartheid or mass atrocity elsewhere and the limited, slow response (ICJ/ICC) today. Global capitalism, meanwhile, functions smoothly and asymmetrically — the gap between the Israeli and Palestinian economies has widened enormously since 1948 — while a fragmenting Arab world and new security threats complicate the picture.</p></div>
+        </details>
+      </section>
+
+      <section class="section" id="s1-where">
+        <div class="section-head"><h3>Where this leaves ALFA</h3><span class="tag">Openings</span></div>
+        <div class="grid c2">
+          <div class="card"><h4>The opening in the failure</h4><p>The limits of force and unilateralism are becoming visible; middle powers still need international law and institutions. That creates takers for ALFA's supranational, regional approach that were harder to find a year ago.</p></div>
+          <div class="card"><h4>The state system — and beyond</h4><p>ALFA holds onto the state system (the durable "atomic element" of world order) while building beyond it. Confederation is offered as the bi-national path between a "dead" two-state status quo and an "impossible" one-state reality — and as the creative way to finally realize the recognized-but-unfulfilled right to self-determination (UN Resolution 181; the ICJ).</p></div>
+          <div class="card"><h4>Civil society as an envelope</h4><p>Unprecedented global mobilization is reshaping politics and elections. ALFA can connect to it — while navigating two risks: that the movement becomes a symbol of revolt rather than reconciliation, and that the language of decolonization gets captured by nationalist forces.</p></div>
+          <div class="card"><h4>From "who we need" to "who needs us"</h4><p>The strategic reframe: stop asking who can help, and identify who actually <em>needs</em> ALFA — turning the movement from a "nice to have" into a "must have," and into a resource others depend on.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1-specifics">
+        <div class="section-head"><h3>Points raised in discussion</h3><span class="tag">Internal</span></div>
+        <details class="acc">
+          <summary><span style="flex:1">A symptom — and an opening</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>The new "Board of Peace" construct, which elevates "pragmatism" over rights and institutions, was read as emblematic of the moment — and, in its failure, as ground on which something better can be built.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">The one-state surge</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>A one-state framing is now near-consensus in parts of the diaspora and solidarity movements; the panel urged engaging it directly and showing confederation as the bi-national answer to the equality demand.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">"Getting our hands dirty"</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>No apartheid or colonial order has receded willingly; some argued ALFA must also support international restraint and punitive pressure on Israel — echoing the sanctions debate from Session 2.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">Bottom-up, not only top-down</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>Several voices insisted that nothing shifts without Gaza and the West Bank in view: protection of Palestinians, work on both societies, and peace between peoples, not only between regimes.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">System change, or balance of power?</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>A live debate on whether the order is genuinely changing or merely re-weighting (rising powers; the salience of strategic geography) — and a call to rethink alliances and frames accordingly.</p></div>
+        </details>
+        <details class="acc">
+          <summary><span style="flex:1">ALFA's "in-betweenness"</span><span class="twist" aria-hidden="true">›</span></summary>
+          <div class="acc-body"><p>ALFA's defining position — between preserving and transforming, between one and two states, between principle and pragmatism — is its strength and its hardest dilemma, since the moment pulls toward the poles. Adapt the language (including human-rights language for the young) to each audience.</p></div>
+        </details>
+      </section>
+
+      <section class="section" id="s1-takeaways">
+        <div class="callout">
+          <h4>Key takeaways</h4>
+          <ul class="clean">
+            <li>The old order is fraying — but its failures, and a surging civil society, are an <b>opening</b>, not only a loss.</li>
+            <li>Lead with the supranational, bi-national frame: confederation between the "dead" two-state and the "impossible" one-state.</li>
+            <li>Mobilize the recognized-but-unfulfilled right (Resolution 181; the ICJ) as a source of legitimacy.</li>
+            <li>Reframe from "who we need" to <b>"who needs us"</b> — become a must-have resource.</li>
+            <li>Connect to civil society, carefully — avoid becoming a symbol of revolt or ceding "liberation" to nationalists.</li>
+          </ul>
+        </div>
+
+        <!-- Transcript strip -->
+        <div class="tw-strip">
+          <div class="lbl">📄 <b>Read the full Session 1 transcript</b> (~90 min)</div>
+          <a class="btn view" data-tr="s1-view" href="session-1-transcript.html" target="_blank" rel="noopener">View</a>
+          <a class="btn dl" data-tr="s1-dl" href="session-1-transcript.docx" download>Download Word</a>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================ TAB 4 — SESSION 2 ================== -->
     <section class="pane" id="pane-s2" role="tabpanel" aria-labelledby="tab-s2" tabindex="0" hidden>
       <div class="page-head">
         <div class="crumb">Session 2 · International Engagement Review</div>
@@ -972,7 +1088,7 @@ footer a{color:var(--sage-deep)}
       </section>
     </section>
 
-    <!-- ============================ TAB 4 — SESSION 3 ================== -->
+    <!-- ============================ TAB 5 — SESSION 3 ================== -->
     <section class="pane" id="pane-s3" role="tabpanel" aria-labelledby="tab-s3" tabindex="0" hidden>
       <div class="page-head">
         <div class="crumb">Session 3 · Strategic Planning</div>
@@ -1093,12 +1209,12 @@ footer a{color:var(--sage-deep)}
       </section>
     </section>
 
-    <!-- ============================ TAB 5 — THEMES ===================== -->
+    <!-- ============================ TAB 6 — THEMES ===================== -->
     <section class="pane" id="pane-themes" role="tabpanel" aria-labelledby="tab-themes" tabindex="0" hidden>
       <div class="page-head">
         <div class="crumb">What We Heard</div>
         <h2>Cross-Cutting Conclusions</h2>
-        <p class="lede">Five threads ran through both sessions.</p>
+        <p class="lede">Seven threads ran through the sessions.</p>
       </div>
 
       <section class="section" id="th-threads">
@@ -1108,6 +1224,8 @@ footer a{color:var(--sage-deep)}
           <div class="numcard"><div class="num">3</div><div class="body"><h4>Global engagement only matters if it changes things at home.</h4><p>Impact runs through political elites, grass-tops, and grassroots — in both societies.</p></div></div>
           <div class="numcard"><div class="num">4</div><div class="body"><h4>Protect what is distinctive.</h4><p>ALFA is the rare cross-border, bi-national political movement with a positive vision; that distinctiveness should not be traded away by absorbing other agendas.</p></div></div>
           <div class="numcard"><div class="num">5</div><div class="body"><h4>Capacity and process are strategy.</h4><p>A dedicated international function, a tracking system, a wider bench of voices, better documentation, and longer-term planning are not "admin" — they are how the vision travels.</p></div></div>
+          <div class="numcard"><div class="num">6</div><div class="body"><h4>Read the moment.</h4><p>The global order is shifting; ALFA's supranational, bi-national model fits the opening created by the failure of unilateralism and the surge of civil society. Timing is part of strategy.</p></div></div>
+          <div class="numcard"><div class="num">7</div><div class="body"><h4>From "who we need" to "who needs us."</h4><p>The decisive reframe across the retreat: identify the actors who <em>need</em> ALFA, and turn the movement from a "nice to have" into a "must have."</p></div></div>
         </div>
       </section>
 
@@ -1118,7 +1236,7 @@ footer a{color:var(--sage-deep)}
       </section>
     </section>
 
-    <!-- ============================ TAB 6 — ROAD AHEAD ================= -->
+    <!-- ============================ TAB 7 — ROAD AHEAD ================= -->
     <section class="pane" id="pane-road" role="tabpanel" aria-labelledby="tab-road" tabindex="0" hidden>
       <div class="page-head">
         <div class="crumb">Forward Agenda</div>
@@ -1164,6 +1282,8 @@ footer a{color:var(--sage-deep)}
 const PASSWORD = "RETREAT2026"; // <-- change this
 
 const TRANSCRIPTS = {
+  "s1-view": "session-1-transcript.html",
+  "s1-dl":   "session-1-transcript.docx",
   "s2-view": "session-2-transcript.html",
   "s2-dl":   "session-2-transcript.docx",
   "s3-view": "session-3-transcript.html",
@@ -1218,10 +1338,16 @@ window.addEventListener('DOMContentLoaded', function(){
   if(!gate.classList.contains('hidden')) gateIn.focus();
 });
 
+/* Mobile-menu element refs — declared before the TABS logic so closeMenu()
+   (called inside switchTab) is safe even during initFromHash on a hash load. */
+var sidebar   = document.getElementById('sidebar');
+var hamburger = document.getElementById('hamburger');
+var backdrop  = document.getElementById('backdrop');
+
 /* =========================================================================
    TABS  — show/hide panes, sync ARIA, deep-link via #hash
    ========================================================================= */
-var TABS = ['overview','retreat','s2','s3','themes','road'];
+var TABS = ['overview','retreat','s1','s2','s3','themes','road'];
 
 function switchTab(which, updateHash){
   if(TABS.indexOf(which) === -1) which = 'overview';
@@ -1266,7 +1392,7 @@ document.querySelectorAll('.tab-btn').forEach(function(btn){
 /* =========================================================================
    IN-PAGE NAV — smooth scroll + scrollspy (active section highlight)
    ========================================================================= */
-document.querySelectorAll('.spine a').forEach(function(a){
+document.querySelectorAll('.spine a, a.tablink').forEach(function(a){
   a.addEventListener('click', function(e){
     var id = a.getAttribute('href').slice(1);
     var target = document.getElementById(id);
@@ -1303,11 +1429,9 @@ if('IntersectionObserver' in window){
 
 /* =========================================================================
    MOBILE MENU — hamburger opens the off-canvas sidebar
+   (element refs are declared earlier, above the TABS section, so closeMenu()
+    is safe when called during initFromHash on a deep-linked load.)
    ========================================================================= */
-var sidebar   = document.getElementById('sidebar');
-var hamburger = document.getElementById('hamburger');
-var backdrop  = document.getElementById('backdrop');
-
 function openMenu(){
   sidebar.classList.add('open');
   backdrop.classList.add('show');
