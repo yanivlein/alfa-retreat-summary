@@ -560,6 +560,49 @@ footer a{color:var(--sage-deep)}
   .shell{grid-template-columns:330px 1fr}
   .pane,footer{max-width:1180px}
 }
+
+/* =========================================================================
+   SESSION IMAGE (click to enlarge) + LIGHTBOX + SUMMARY VIDEO
+   ========================================================================= */
+.shot{
+  display:block;width:100%;padding:0;margin:0;cursor:zoom-in;position:relative;
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  background:var(--mist);box-shadow:var(--shadow-sm);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.shot:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.shot:focus-visible{outline:2px solid var(--sage-deep);outline-offset:3px}
+.shot img{display:block;width:100%;height:auto}
+.shot-zoom{
+  position:absolute;bottom:.75rem;right:.75rem;display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.74rem;font-weight:600;color:#fff;background:rgba(39,66,77,.82);
+  border-radius:999px;padding:.32rem .72rem;backdrop-filter:blur(4px);pointer-events:none;
+}
+@media (prefers-reduced-motion: reduce){.shot:hover{transform:none}}
+
+/* Full-screen image viewer */
+.lightbox{
+  position:fixed;inset:0;z-index:1100;display:none;align-items:center;justify-content:center;
+  padding:clamp(1rem,3vw,2.5rem);background:rgba(20,34,40,.93);
+}
+.lightbox.open{display:flex}
+.lightbox img{
+  max-width:96vw;max-height:90vh;width:auto;height:auto;object-fit:contain;
+  border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.55);
+}
+.lb-close{
+  position:absolute;top:1rem;right:1.2rem;width:46px;height:46px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.12);color:#fff;
+  font-size:1.6rem;line-height:1;cursor:pointer;display:grid;place-items:center;transition:background .2s;
+}
+.lb-close:hover{background:rgba(255,255,255,.24)}
+
+/* Summary video player */
+.video-frame{
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  background:#0b1418;box-shadow:var(--shadow-sm);
+}
+.video-frame video{display:block;width:100%;height:auto;max-height:80vh;background:#000}
 </style>
 </head>
 <body>
@@ -963,6 +1006,13 @@ footer a{color:var(--sage-deep)}
           <a class="btn dl" data-tr="s1-dl" href="session-1-transcript.docx" download>Download Word</a>
         </div>
       </section>
+
+      <section class="section">
+        <button class="shot" aria-label="Open the Session 1 illustration full screen">
+          <img src="session-1-image.png" alt="Session 1 — Shifting Geopolitics: illustration created for the session" loading="lazy">
+          <span class="shot-zoom" aria-hidden="true">⤢ Enlarge</span>
+        </button>
+      </section>
     </section>
 
     <!-- ============================ TAB 4 — SESSION 2 ================== -->
@@ -1086,6 +1136,13 @@ footer a{color:var(--sage-deep)}
           <a class="btn dl" data-tr="s2-dl" href="session-2-transcript.docx" download>Download Word</a>
         </div>
       </section>
+
+      <section class="section">
+        <button class="shot" aria-label="Open the Session 2 illustration full screen">
+          <img src="session-2-image.png" alt="Session 2 — Taking Stock: illustration created for the session" loading="lazy">
+          <span class="shot-zoom" aria-hidden="true">⤢ Enlarge</span>
+        </button>
+      </section>
     </section>
 
     <!-- ============================ TAB 5 — SESSION 3 ================== -->
@@ -1207,6 +1264,13 @@ footer a{color:var(--sage-deep)}
           <a class="btn dl" data-tr="s3-dl" href="session-3-transcript.docx" download>Download Word</a>
         </div>
       </section>
+
+      <section class="section">
+        <button class="shot" aria-label="Open the Session 3 illustration full screen">
+          <img src="session-3-image.png" alt="Session 3 — The Year Ahead: illustration created for the session" loading="lazy">
+          <span class="shot-zoom" aria-hidden="true">⤢ Enlarge</span>
+        </button>
+      </section>
     </section>
 
     <!-- ============================ TAB 6 — THEMES ===================== -->
@@ -1232,6 +1296,16 @@ footer a{color:var(--sage-deep)}
       <section class="section" id="th-edge">
         <div class="gpanel">
           <div class="lead">The movement's edge is not a better slogan; it is a different way of thinking about the conflict — and the discipline to make it concrete.</div>
+        </div>
+      </section>
+
+      <section class="section" id="th-video">
+        <div class="video-frame">
+          <video controls preload="metadata" playsinline>
+            <source src="summary-video.mp4" type="video/mp4">
+            Your browser does not support the video tag. You can
+            <a href="summary-video.mp4">download the video</a> instead.
+          </video>
         </div>
       </section>
     </section>
@@ -1265,6 +1339,12 @@ footer a{color:var(--sage-deep)}
     </footer>
 
   </main>
+</div>
+
+<!-- Full-screen image viewer (shared by the session images) -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lb-close" id="lb-close" aria-label="Close image">&times;</button>
+  <img id="lb-img" src="" alt="">
 </div>
 
 <script>
@@ -1446,6 +1526,38 @@ hamburger.addEventListener('click', function(){
   sidebar.classList.contains('open') ? closeMenu() : openMenu();
 });
 backdrop.addEventListener('click', closeMenu);
+
+/* =========================================================================
+   IMAGE LIGHTBOX — click a session image to view it full screen
+   ========================================================================= */
+var lightbox = document.getElementById('lightbox');
+var lbImg    = document.getElementById('lb-img');
+var lbClose  = document.getElementById('lb-close');
+
+function openLightbox(src, alt){
+  lbImg.setAttribute('src', src);
+  lbImg.setAttribute('alt', alt || '');
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lbClose.focus();
+}
+function closeLightbox(){
+  lightbox.classList.remove('open');
+  lbImg.setAttribute('src', '');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.shot').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var img = btn.querySelector('img');
+    if(img) openLightbox(img.getAttribute('src'), img.getAttribute('alt'));
+  });
+});
+lbClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', function(e){ if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+});
 </script>
 </body>
 </html>
